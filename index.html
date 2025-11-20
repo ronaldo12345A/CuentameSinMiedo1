@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuéntame Sin Miedo</title>
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Meta PWA -->
+    <meta name="theme-color" content="#2c4a7a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Dar el primer paso es un acto de valentía.Gracias por confiar en nosotros">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        header {
+            background: linear-gradient(to right, #4a6fa5, #2c4a7a);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 15px 15px;
+            position: relative;
+        }
+
+        .install-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .install-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .screen {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #2c4a7a;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #4a6fa5;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            background: linear-gradient(to right, #4a6fa5, #2c4a7a);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .emergency-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            margin-top: 20px;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(to right, #25D366, #128C7E);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2c4a7a;
+        }
+
+        .emergency-item {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #ff7675 0%, #e74c3c 100%);
+            color: white;
+        }
+
+        .emergency-item .menu-icon {
+            color: white;
+        }
+
+        .phone-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+
+        .back-btn {
+            background: #95a5a6;
+            margin-bottom: 20px;
+            width: auto;
+            padding: 10px 20px;
+        }
+
+        .info-text {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Estilos del Chatbot */
+        .chat-container {
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .bot-message {
+            background: #e3f2fd;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: #2c4a7a;
+            color: white;
+            border-bottom-right-radius: 5px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: white;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            margin-right: 10px;
+            margin-top: 0;
+        }
+
+        .chat-input button {
+            width: auto;
+            margin-top: 0;
+            padding: 10px 20px;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 10px 15px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .quick-reply {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-reply:hover {
+            background: #2c4a7a;
+            color: white;
+        }
+
+        /* Estilos para el mapa */
+        .map-container {
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .location-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .location-info h3 {
+            color: #2c4a7a;
+            margin-bottom: 10px;
+        }
+
+        .location-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .location-actions button {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        /* Estilos para los foros */
+        .forum-container {
+            margin-top: 20px;
+        }
+
+        .forum-messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+        }
+
+        .forum-message {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            max-width: 85%;
+        }
+
+        .user-forum-message {
+            background: #2c4a7a;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+
+        .professional-message {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-bottom-left-radius: 0;
+        }
+
+        .professional-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-bottom: 5px;
+        }
+
+        .forum-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .forum-input textarea {
+            flex: 1;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .forum-input button {
+            width: auto;
+            margin-top: 0;
+            align-self: flex-end;
+        }
+
+        .professionals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .professional-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .professional-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .professional-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Estilos para educación */
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .resource-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+        }
+
+        .resource-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Estilos para emergencia */
+        .emergency-info {
+            background: #ffeaa7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .emergency-steps {
+            margin-top: 20px;
+        }
+
+        .emergency-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: #e74c3c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Estilos para validación */
+        .validation-error {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+
+        .input-success {
+            border-color: #2ecc71 !important;
+        }
+
+        /* Estilos para la cámara y ubicación en emergencia */
+        .camera-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #camera-feed {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            border: 2px solid #e74c3c;
+            display: none;
+        }
+
+        .location-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .location-display h3 {
+            color: #2c4a7a;
+            margin-bottom: 10px;
+        }
+
+        .location-coordinates {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .emergency-recording {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #e74c3c;
+            display: none;
+        }
+
+        .recording-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #e74c3c;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Estilos para el chatbot mejorado */
+        .suggested-questions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .suggested-question {
+            display: inline-block;
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .suggested-question:hover {
+            background: #bbdefb;
+            transform: translateY(-2px);
+        }
+        
+        .error-message {
+            color: #ff5252;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            padding: 0 15px;
+        }
+
+        /* Estilos para recursos de educación */
+        .resource-detail {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #2c4a7a;
+        }
+
+        .resource-detail h3 {
+            color: #2c4a7a;
+            margin-bottom: 15px;
+        }
+
+        .resource-content {
+            line-height: 1.6;
+        }
+
+        .resource-content ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .resource-content li {
+            margin-bottom: 8px;
+        }
+
+        .close-resource {
+            background: #95a5a6;
+            margin-top: 15px;
+            width: auto;
+        }
+
+        .download-resource-btn {
+            background: #27ae60;
+            margin-top: 15px;
+            width: auto;
+        }
+
+        .download-resource-btn:hover {
+            background: #219653;
+        }
+
+        /* Estilos para foros mejorados */
+        .experience-sharing {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .experience-sharing h3 {
+            color: #2c4a7a;
+            margin-bottom: 15px;
+        }
+
+        .user-experience {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a6fa5;
+        }
+
+        .user-experience h4 {
+            color: #2c4a7a;
+            margin-bottom: 10px;
+        }
+
+        .experience-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .share-experience-btn {
+            background: #4a6fa5;
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .professional-response {
+            background: #e8f5e8;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0 15px 20px;
+            border-left: 4px solid #4caf50;
+        }
+
+        .response-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <button id="install-btn" class="install-btn">Instalar App</button>
+        <h1>Cuéntame Sin Miedo</h1>
+        <p>Espacio seguro y confidencial contra la violencia familiar</p>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Pantalla de Bienvenida/Login -->
+    <div id="welcome-screen" class="screen active">
+        <div style="text-align: center; font-size: 3rem; margin-bottom: 20px;">🔒</div>
+        <h2>Bienvenido/ a </h2>
+        <p class="info-text">Ingresa tus datos para acceder a la plataforma segura</p>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="name">Nombre y Apellidos</label>
+                <input type="text" id="name" placeholder="Ingresa tu nombre completo">
+                <div class="validation-error" id="name-error">Por favor, ingresa tu nombre y apellidos válidos (mínimo 5 caracteres, solo letras y espacios)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Teléfono</label>
+                <input type="tel" id="phone" placeholder="Ingresa tu número de teléfono">
+                <div class="validation-error" id="phone-error">Por favor, ingresa un número de teléfono válido (9 dígitos)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Departamento</label>
+                <select id="department">
+                    <option value="">Selecciona tu departamento</option>
+                    <option value="amazonas">Amazonas</option>
+                    <option value="ancash">Áncash</option>
+                    <option value="apurimac">Apurímac</option>
+                    <option value="arequipa">Arequipa</option>
+                    <option value="ayacucho">Ayacucho</option>
+                    <option value="cajamarca">Cajamarca</option>
+                    <option value="cusco">Cusco</option>
+                    <option value="huancavelica">Huancavelica</option>
+                    <option value="huanuco">Huánuco</option>
+                    <option value="ica">Ica</option>
+                    <option value="junin">Junín</option>
+                    <option value="lalibertad">La Libertad</option>
+                    <option value="lambayeque">Lambayeque</option>
+                    <option value="lima">Lima</option>
+                    <option value="loreto">Loreto</option>
+                    <option value="madrededios">Madre de Dios</option>
+                    <option value="moquegua">Moquegua</option>
+                    <option value="pasco">Pasco</option>
+                    <option value="piura">Piura</option>
+                    <option value="puno">Puno</option>
+                    <option value="sanmartin">San Martín</option>
+                    <option value="tacna">Tacna</option>
+                    <option value="tumbes">Tumbes</option>
+                    <option value="ucayali">Ucayali</option>
+                </select>
+                <div class="validation-error" id="department-error">Por favor, selecciona tu departamento</div>
+            </div>
+
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
+
+    <!-- Pantalla Principal -->
+    <div id="main-screen" class="screen">
+        <h2>¿En qué te podemos ayudar?</h2>
+
+        <div class="menu-grid">
+            <div class="menu-item" id="foros-btn">
+                <div class="menu-icon">💬</div>
+                <h3>Foros</h3>
+                <p>Comparte experiencias</p>
+            </div>
+
+            <div class="menu-item" id="chatbot-btn">
+                <div class="menu-icon">🤖</div>
+                <h3>Chatbot</h3>
+                <p>IA empática 24/7</p>
+            </div>
+
+            <div class="menu-item" id="mapa-btn">
+                <div class="menu-icon">🗺️</div>
+                <h3>Mapa</h3>
+                <p>Puntos seguros</p>
+            </div>
+
+            <div class="menu-item" id="educacion-btn">
+                <div class="menu-icon">📚</div>
+                <h3>Educación</h3>
+                <p>Recursos preventivos</p>
+            </div>
+
+            <div class="menu-item emergency-item" id="emergencia-btn">
+                <div class="menu-icon">🚨</div>
+                <h3>¡EMERGENCIA!</h3>
+                <p>Ayuda inmediata</p>
+                <div class="phone-number">900 978 257</div>
+            </div>
+        </div>
+
+        <button class="back-btn" id="back-to-login">Cerrar Sesión</button>
+    </div>
+
+    <!-- Pantalla del Chatbot Mejorado -->
+<div id="chatbot-screen" class="screen">
+    <button class="back-btn" id="back-from-chatbot">← Volver al Menú</button>
+    <h2>Chatbot de Ayuda</h2>
+    <p class="info-text">Estoy aquí para escucharte y orientarte de forma confidencial</p>
+
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                <div class="bot-message-content">
+                    <p><strong>¡Hola! Soy tu asistente virtual.</strong> Estoy aquí para escucharte y orientarte de forma confidencial sobre situaciones de violencia familiar.</p>
+                    <p>Puedo ayudarte con:</p>
+                    <ul>
+                        <li>Información sobre tipos de violencia</li>
+                        <li>Orientación sobre recursos disponibles</li>
+                        <li>Estrategias de autoprotección</li>
+                        <li>Derechos legales y procedimientos</li>
+                    </ul>
+                    <p>¿En qué puedo ayudarte hoy?</p>
+                    <div class="suggested-questions">
+                        <p><strong>Preguntas sugeridas:</strong></p>
+                        <div class="suggested-question" data-message="¿Dónde puedo pedir ayuda si estoy siendo víctima de violencia?">¿Dónde puedo pedir ayuda?</div>
+                        <div class="suggested-question" data-message="¿Qué necesito para denunciar la violencia que sufrí?">¿Qué necesito para denunciar?</div>
+                        <div class="suggested-question" data-message="¿Puedo denunciar si no quiero ir a la policía?">¿Puedo denunciar sin ir a la policía?</div>
+                        <div class="suggested-question" data-message="¿Qué pasa después de hacer la denuncia?">¿Qué pasa después de denunciar?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typing-indicator">El asistente está escribiendo...</div>
+        <div class="error-message" id="error-message">Por favor, escribe un mensaje válido (mínimo 2 caracteres).</div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
+            <button id="send-btn">Enviar</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Pantalla de Foros con Profesionales MEJORADA -->
+    <div id="foros-screen" class="screen">
+        <button class="back-btn" id="back-from-foros">← Volver al Menú</button>
+        <h2>Foros de Apoyo con Profesionales</h2>
+        <p class="info-text">Conecta con profesionales que pueden ayudarte</p>
+
+        <div class="forum-container">
+            <div class="forum-messages" id="forum-messages">
+                <div class="forum-message professional-message">
+                    <div class="professional-badge">Psicóloga</div>
+                    <strong>Dra. María López:</strong> Hola, soy psicóloga especializada en violencia familiar. Estoy aquí para escucharte y orientarte. ¿En qué puedo ayudarte?
+                </div>
+                <div class="forum-message professional-message">
+                    <div class="professional-badge">Abogado</div>
+                    <strong>Dr. Carlos Rodríguez:</strong> Buenos días, ofrezco asesoría legal gratuita sobre violencia familiar. Puedo ayudarte con denuncias y medidas de protección.
+                </div>
+                <div class="forum-message professional-message">
+                    <div class="professional-badge">Trabajadora Social</div>
+                    <strong>Lic. Ana Torres:</strong> Hola, como trabajadora social puedo orientarte sobre recursos disponibles y centros de ayuda en tu zona.
+                </div>
+                
+                <!-- Experiencias de usuarios compartidas -->
+                <div class="user-experience">
+                    <h4>💪 Mi experiencia superando el miedo</h4>
+                    <p>"Después de meses de vivir con miedo constante, decidí buscar ayuda. El primer paso fue el más difícil, pero contactar a una trabajadora social me dio la fuerza para seguir adelante. Hoy estoy en un lugar seguro y quiero decirles que sí se puede salir de esta situación."</p>
+                    <div class="experience-meta">- María G., Lima | Publicado hace 2 días</div>
+                    
+                    <div class="professional-response">
+                        <div class="professional-badge">Trabajadora Social</div>
+                        <strong>Lic. Ana Torres:</strong> María, tu testimonio es muy valioso y puede inspirar a otras personas. Me alegra mucho saber que estás en un lugar seguro. Recuerda que el proceso de recuperación continúa y estamos aquí para apoyarte en cada paso.
+                    </div>
+                </div>
+
+                <div class="user-experience">
+                    <h4>🛡️ Cómo protegí a mis hijos</h4>
+                    <p>"Como madre, mi mayor preocupación eran mis hijos. Aprendí a reconocer las señales de peligro y creamos un plan de seguridad familiar. Ahora tengo una orden de protección y mis hijos están recibiendo apoyo psicológico. No se rindan, sus hijos los necesitan fuertes."</p>
+                    <div class="experience-meta">- Ana P., Arequipa | Publicado hace 1 semana</div>
+                    
+                    <div class="professional-response">
+                        <div class="professional-badge">Psicóloga</div>
+                        <strong>Dra. María López:</strong> Ana, tomar acción para proteger a tus hijos muestra tu gran fortaleza como madre. Es importante que continúen con el apoyo psicológico para procesar lo vivido. El bienestar emocional de los niños es fundamental en estos procesos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="forum-input">
+                <textarea id="forum-input" placeholder="Comparte tu experiencia o haz una pregunta... (mínimo 10 caracteres)"></textarea>
+                <button id="send-forum-btn">Enviar</button>
+            </div>
+            <div class="validation-error" id="forum-error" style="margin-top: 10px;"></div>
+
+            <!-- Sección para compartir experiencias -->
+            <div class="experience-sharing">
+                <h3>Comparte tu Experiencia</h3>
+                <p>Tu historia puede ayudar a otras personas. Comparte lo que has vivido (de forma anónima si prefieres):</p>
+                <button class="share-experience-btn" id="share-experience-btn">Compartir Mi Experiencia</button>
+            </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px;">Profesionales Disponibles</h3>
+            <div class="professionals-grid">
+                <div class="professional-card" data-professional="psicologa">
+                    <div class="professional-icon">🧠</div>
+                    <h4>Psicóloga</h4>
+                    <p>Dra. María López</p>
+                    <small>Especialista en trauma y recuperación</small>
+                    <div style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                        <strong>Áreas de ayuda:</strong><br>
+                        Apoyo emocional<br>
+                        Manejo del trauma<br>
+                        Recuperación psicológica
+                    </div>
+                </div>
+                <div class="professional-card" data-professional="abogado">
+                    <div class="professional-icon">⚖️</div>
+                    <h4>Abogado</h4>
+                    <p>Dr. Carlos Rodríguez</p>
+                    <small>Derecho familiar y protección</small>
+                    <div style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                        <strong>Áreas de ayuda:</strong><br>
+                        Denuncias legales<br>
+                        Medidas de protección<br>
+                        Asesoría jurídica
+                    </div>
+                </div>
+                <div class="professional-card" data-professional="trabajadora-social">
+                    <div class="professional-icon">👥</div>
+                    <h4>Trabajadora Social</h4>
+                    <p>Lic. Ana Torres</p>
+                    <small>Recursos y apoyo comunitario</small>
+                    <div style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                        <strong>Áreas de ayuda:</strong><br>
+                        Recursos comunitarios<br>
+                        Refugios temporales<br>
+                        Apoyo integral
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Mapa -->
+    <div id="mapa-screen" class="screen">
+        <button class="back-btn" id="back-from-mapa">← Volver al Menú</button>
+        <h2>Mapa de Ayuda</h2>
+        <p class="info-text">Encuentra puntos seguros cerca de ti</p>
+
+        <div class="map-container">
+            <iframe
+                    class="map-frame"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3882.499676337157!2d-71.9289276!3d-13.5321411!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x916e7f38445ac22f%3A0x467e74aae6f39a15!2sComisar%C3%ADa%20PNP%20SAN%20SEBASTIAN!5e0!3m2!1ses!2spe!4v1690000000000!5m2!1ses!2spe"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+        <div class="location-info">
+            <h3>Comisaría PNP San Sebastián</h3>
+            <p><strong>Dirección:</strong> Cusco, Perú</p>
+            <p><strong>Teléfono:</strong> <a href="tel:+51906966723">+51 906 966 723</a></p>
+            <p><strong>Horario:</strong> 24 horas</p>
+
+            <div class="location-actions">
+                <button onclick="window.open('https://www.google.com/maps/dir//-13.5321411,-71.9289276/@-13.532141,-71.928928,16z')">Cómo llegar</button>
+                <button onclick="window.location.href='tel:+51906966723'">Llamar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Educación con Validación MEJORADA -->
+    <div id="educacion-screen" class="screen">
+        <button class="back-btn" id="back-from-educacion">← Volver al Menú</button>
+        <h2>Educación Preventiva</h2>
+        <p class="info-text">Recursos validados para prevenir la violencia</p>
+
+        <div class="resource-grid">
+            <div class="resource-item" data-resource="autoproteccion">
+                <div class="resource-icon">📖</div>
+                <h4>Guías de Autoprotección</h4>
+                <p>Estrategias para identificar y prevenir situaciones de riesgo</p>
+            </div>
+            <div class="resource-item" data-resource="derechos">
+                <div class="resource-icon">⚖️</div>
+                <h4>Derechos Legales</h4>
+                <p>Información sobre tus derechos y cómo ejercerlos</p>
+            </div>
+            <div class="resource-item" data-resource="salud-mental">
+                <div class="resource-icon">🧠</div>
+                <h4>Salud Mental</h4>
+                <p>Recursos para el cuidado emocional y recuperación</p>
+            </div>
+            <div class="resource-item" data-resource="apoyo-familiar">
+                <div class="resource-icon">👨‍👩‍👧‍👦</div>
+                <h4>Apoyo Familiar</h4>
+                <p>Materiales para fortalecer relaciones familiares saludables</p>
+            </div>
+        </div>
+
+        <!-- Detalles de recursos MEJORADOS -->
+        <div id="autoproteccion-detail" class="resource-detail">
+            <h3>Guía Completa de Autoprotección</h3>
+            <div class="resource-content">
+                <p><strong>Estrategias para tu seguridad:</strong></p>
+                <ul>
+                    <li><strong>Identifica señales de alerta temprana:</strong> Comportamientos controladores, celos excesivos, aislamiento social</li>
+                    <li><strong>Establece límites claros y firmes:</strong> Comunica lo que no estás dispuesto/a a tolerar</li>
+                    <li><strong>Prepara un plan de seguridad:</strong> Ten una mochila con documentos importantes, dinero y medicamentos</li>
+                    <li><strong>Conoce rutas de escape en tu hogar:</strong> Identifica salidas alternativas y evita quedar atrapado/a</li>
+                    <li><strong>Mantén documentos importantes en lugar seguro:</strong> DNIs, partidas de nacimiento, cuentas bancarias</li>
+                    <li><strong>Ten números de emergencia accesibles:</strong> 900 978 257 (Línea 100), comisarías locales, personas de confianza</li>
+                </ul>
+                <p><strong>Plan de Seguridad Digital:</strong></p>
+                <ul>
+                    <li>Cambia contraseñas regularmente</li>
+                    <li>Revisa la configuración de privacidad en redes sociales</li>
+                    <li>Ten un correo electrónico de emergencia</li>
+                    <li>Guarda evidencia digital de manera segura</li>
+                </ul>
+                <p><strong>Recuerda:</strong> Tu seguridad es lo más importante. Si sientes que estás en peligro, busca ayuda inmediatamente.</p>
+            </div>
+            <button class="download-resource-btn" data-resource="autoproteccion">📥 Descargar Guía Completa (PDF)</button>
+            <button class="close-resource" data-resource="autoproteccion">Cerrar</button>
+        </div>
+
+        <div id="derechos-detail" class="resource-detail">
+            <h3>Guía Completa de Derechos Legales</h3>
+            <div class="resource-content">
+                <p><strong>Tienes derecho a:</strong></p>
+                <ul>
+                    <li><strong>Vivir una vida libre de violencia:</strong> Es un derecho humano fundamental</li>
+                    <li><strong>Recibir protección del Estado:</strong> A través de comisarías, fiscalías y juzgados</li>
+                    <li><strong>Acceder a justicia gratuita:</strong> Defensoría pública y asesoría legal sin costo</li>
+                    <li><strong>Solicitar medidas de protección:</strong> Órdenes de alejamiento, prohibición de comunicación</li>
+                    <li><strong>Recibir atención integral:</strong> Apoyo psicológico, social y legal</li>
+                    <li><strong>Confidencialidad en tu caso:</strong> Tu información personal está protegida</li>
+                </ul>
+                <p><strong>Procedimientos paso a paso:</strong></p>
+                <ul>
+                    <li><strong>Denuncia:</strong> Acude a cualquier comisaría las 24 horas</li>
+                    <li><strong>Evaluación de riesgo:</strong> Un profesional evaluará tu situación</li>
+                    <li><strong>Medidas inmediatas:</strong> Puedes solicitar protección urgente</li>
+                    <li><strong>Seguimiento:</strong> Tu caso será monitoreado regularmente</li>
+                </ul>
+                <p><strong>Procedimientos:</strong> Puedes acudir a cualquier comisaría, fiscalía o juzgado de familia para denunciar situaciones de violencia.</p>
+            </div>
+            <button class="download-resource-btn" data-resource="derechos">📥 Descargar Guía Legal (PDF)</button>
+            <button class="close-resource" data-resource="derechos">Cerrar</button>
+        </div>
+
+        <div id="salud-mental-detail" class="resource-detail">
+            <h3>Guía Completa de Salud Mental y Recuperación</h3>
+            <div class="resource-content">
+                <p><strong>Cuidado emocional:</strong></p>
+                <ul>
+                    <li><strong>Reconoce y valida tus emociones:</strong> El miedo, la tristeza y la ira son respuestas normales</li>
+                    <li><strong>Busca apoyo psicológico profesional:</strong> Terapia especializada en trauma</li>
+                    <li><strong>Practica técnicas de relajación:</strong> Respiración profunda, meditación, mindfulness</li>
+                    <li><strong>Establece rutinas saludables:</strong> Sueño regular, alimentación balanceada, ejercicio</li>
+                    <li><strong>Conecta con grupos de apoyo:</strong> Compartir experiencias con personas que han vivido situaciones similares</li>
+                    <li><strong>Permítete tiempo para sanar:</strong> La recuperación es un proceso que toma tiempo</li>
+                </ul>
+                <p><strong>Señales que requieren atención profesional:</strong></p>
+                <ul>
+                    <li>Pensamientos de suicidio o autolesión</li>
+                    <li>Incapacidad para realizar actividades diarias</li>
+                    <li>Pesadillas recurrentes o flashbacks</li>
+                    <li>Aislamiento social prolongado</li>
+                    <li>Cambios extremos en el apetito o sueño</li>
+                </ul>
+                <p><strong>Recuerda:</strong> No estás solo/a. El proceso de recuperación toma tiempo, pero es posible reconstruir tu vida.</p>
+            </div>
+            <button class="download-resource-btn" data-resource="salud-mental">📥 Descargar Guía de Salud Mental (PDF)</button>
+            <button class="close-resource" data-resource="salud-mental">Cerrar</button>
+        </div>
+
+        <div id="apoyo-familiar-detail" class="resource-detail">
+            <h3>Guía Completa de Apoyo Familiar Saludable</h3>
+            <div class="resource-content">
+                <p><strong>Para construir relaciones familiares saludables:</strong></p>
+                <ul>
+                    <li><strong>Practica la comunicación respetuosa:</strong> Escucha activa, validación de emociones</li>
+                    <li><strong>Establece límites claros:</strong> Define lo que es aceptable y lo que no en la familia</li>
+                    <li><strong>Fomenta la empatía y comprensión:</strong> Ponerse en el lugar del otro</li>
+                    <li><strong>Resuelve conflictos de manera constructiva:</strong> Sin violencia, con diálogo</li>
+                    <li><strong>Celebra los logros de cada miembro:</strong> Reconoce y valora los avances</li>
+                    <li><strong>Crea espacios de diálogo seguro:</strong> Donde todos puedan expresarse sin miedo</li>
+                </ul>
+                <p><strong>Señales de relaciones saludables:</strong></p>
+                <ul>
+                    <li>Respeto mutuo en las decisiones</li>
+                    <li>Apoyo incondicional en momentos difíciles</li>
+                    <li>Distribución equitativa de responsabilidades</li>
+                    <li>Capacidad para resolver desacuerdos pacíficamente</li>
+                    <li>Espacio para el crecimiento individual</li>
+                </ul>
+                <p><strong>Importante:</strong> Una familia saludable se basa en el respeto mutuo, la confianza y el apoyo incondicional.</p>
+            </div>
+            <button class="download-resource-btn" data-resource="apoyo-familiar">📥 Descargar Guía Familiar (PDF)</button>
+            <button class="close-resource" data-resource="apoyo-familiar">Cerrar</button>
+        </div>
+
+        <div class="download-section">
+            <h3>Descargar Todos los Recursos</h3>
+            <p>Accede a todos nuestros materiales educativos en un solo paquete completo</p>
+            <button id="download-all-btn" style="width: auto; display: inline-block; padding: 12px 30px;">📚 Descargar Recursos Completos (ZIP)</button>
+            <div class="validation-error" id="download-error" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+
+    <!-- Pantalla de Emergencia MEJORADA -->
+    <div id="emergencia-screen" class="screen">
+        <button class="back-btn" id="back-from-emergencia">← Volver al Menú</button>
+        <h2>¡EMERGENCIA!</h2>
+
+        <div class="emergency-info">
+            <h3>¿Estás en peligro inmediato?</h3>
+            <p>Si estás en una situación de peligro, actúa de inmediato:</p>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <div style="font-size: 2rem; font-weight: bold; color: #e74c3c;">900 978 257</div>
+            <p>Línea nacional de emergencia</p>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <div style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">+51 906 966 723</div>
+            <p>Línea directa Perú - Respuesta inmediata</p>
+        </div>
+
+        <button class="emergency-btn" id="emergency-call-btn">
+            <i class="fas fa-phone"></i> LLAMAR AL NÚMERO DE EMERGENCIA
+        </button>
+        <button class="emergency-btn" id="emergency-call-peru-btn">
+            <i class="fas fa-phone"></i> LLAMAR LÍNEA PERÚ
+        </button>
+        <button class="emergency-btn whatsapp-btn" id="emergency-whatsapp-btn">
+            <i class="fab fa-whatsapp"></i> CONTACTAR POR WHATSAPP
+        </button>
+
+        <!-- Sección de cámara y ubicación -->
+        <div class="camera-container">
+            <video id="camera-feed" autoplay playsinline></video>
+        </div>
+
+        <div class="location-display" id="location-display">
+            <h3>Tu ubicación actual</h3>
+            <p id="location-address">Obteniendo dirección...</p>
+            <div class="location-coordinates" id="location-coordinates"></div>
+        </div>
+
+        <div class="emergency-recording" id="emergency-recording">
+            <p><span class="recording-indicator"></span> Grabando emergencia...</p>
+            <p>Tu ubicación y video están siendo registrados para tu seguridad.</p>
+        </div>
+
+        <div class="emergency-steps">
+            <h3 style="margin-top: 30px; margin-bottom: 15px;">¿Qué hacer en caso de emergencia?</h3>
+
+            <div class="emergency-step">
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Mantén la calma</strong>
+                    <p>Respira profundamente y evalúa la situación. Tu seguridad es lo más importante.</p>
+                </div>
+            </div>
+
+            <div class="emergency-step">
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Busca un lugar seguro</strong>
+                    <p>Si es posible, aléjate de la situación de peligro y ve a un lugar donde puedas pedir ayuda.</p>
+                </div>
+            </div>
+
+            <div class="emergency-step">
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Llama a los números de emergencia</strong>
+                    <p>Usa los números proporcionados arriba. Los operadores están entrenados para ayudarte.</p>
+                </div>
+            </div>
+
+            <div class="emergency-step">
+                <div class="step-number">4</div>
+                <div>
+                    <strong>Contacta a alguien de confianza</strong>
+                    <p>Informa a una persona de confianza sobre tu situación y ubicación.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p>Con el respaldo del Ministerio de la Mujer y Poblaciones Vulnerables</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Aplicación segura y confidencial - Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!-- Elemento de audio para el sonido de timbre -->
+<audio id="ringtone" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-phone-ring-2962.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // Elementos y navegación
+    const screens = {
+        welcome: document.getElementById('welcome-screen'),
+        main: document.getElementById('main-screen'),
+        chatbot: document.getElementById('chatbot-screen'),
+        foros: document.getElementById('foros-screen'),
+        mapa: document.getElementById('mapa-screen'),
+        educacion: document.getElementById('educacion-screen'),
+        emergencia: document.getElementById('emergencia-screen')
+    };
+
+    // Funciones de navegación
+    function showScreen(screen) {
+        Object.values(screens).forEach(s => s.classList.remove('active'));
+        screen.classList.add('active');
+    }
+
+    // Configurar navegación
+    document.getElementById('back-to-login').addEventListener('click', () => showScreen(screens.welcome));
+    document.getElementById('back-from-chatbot').addEventListener('click', () => showScreen(screens.main));
+    document.getElementById('back-from-foros').addEventListener('click', () => showScreen(screens.main));
+    document.getElementById('back-from-mapa').addEventListener('click', () => showScreen(screens.main));
+    document.getElementById('back-from-educacion').addEventListener('click', () => showScreen(screens.main));
+    document.getElementById('back-from-emergencia').addEventListener('click', () => showScreen(screens.main));
+
+    document.getElementById('chatbot-btn').addEventListener('click', () => showScreen(screens.chatbot));
+    document.getElementById('foros-btn').addEventListener('click', () => showScreen(screens.foros));
+    document.getElementById('mapa-btn').addEventListener('click', () => showScreen(screens.mapa));
+    document.getElementById('educacion-btn').addEventListener('click', () => showScreen(screens.educacion));
+    document.getElementById('emergencia-btn').addEventListener('click', () => showScreen(screens.emergencia));
+
+    // ========== VALIDACIÓN MEJORADA DEL FORMULARIO DE LOGIN ==========
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const department = document.getElementById('department').value;
+        let isValid = true;
+
+        // Validar nombre (mínimo 5 caracteres, solo letras y espacios)
+        if (name.length < 5 || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(name)) {
+            document.getElementById('name-error').style.display = 'block';
+            document.getElementById('name').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('name-error').style.display = 'none';
+            document.getElementById('name').classList.remove('input-error');
+            document.getElementById('name').classList.add('input-success');
+        }
+
+        // Validar teléfono (9 dígitos, formato peruano)
+        if (!/^\d{9}$/.test(phone)) {
+            document.getElementById('phone-error').textContent = 'Por favor, ingresa un número de teléfono válido (9 dígitos)';
+            document.getElementById('phone-error').style.display = 'block';
+            document.getElementById('phone').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('phone-error').style.display = 'none';
+            document.getElementById('phone').classList.remove('input-error');
+            document.getElementById('phone').classList.add('input-success');
+        }
+
+        // Validar departamento
+        if (!department) {
+            document.getElementById('department-error').style.display = 'block';
+            document.getElementById('department').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('department-error').style.display = 'none';
+            document.getElementById('department').classList.remove('input-error');
+            document.getElementById('department').classList.add('input-success');
+        }
+
+        if (isValid) {
+            // Guardar datos en localStorage
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userPhone', phone);
+            localStorage.setItem('userDepartment', department);
+
+            showScreen(screens.main);
+        }
+    });
+
+    // ========== MEJORAS EN LA PANTALLA DE EMERGENCIA ==========
+    
+    // Función para reproducir sonido de timbre
+    function playRingtone() {
+        const ringtone = document.getElementById('ringtone');
+        if (ringtone) {
+            ringtone.play().catch(e => console.log('No se pudo reproducir el sonido automáticamente:', e));
+        }
+    }
+
+    // Función para iniciar el modo de emergencia
+    function startEmergencyMode() {
+        // Mostrar indicador de grabación
+        document.getElementById('emergency-recording').style.display = 'block';
+        
+        // Iniciar cámara
+        startCamera();
+        
+        // Obtener ubicación
+        getLocation();
+        
+        // Reproducir sonido de timbre
+        playRingtone();
+        
+        // Aquí podrías enviar esta información a un servidor para registro
+        console.log('Modo de emergencia activado - grabando video y ubicación');
+    }
+
+    // Event listeners para los botones de emergencia
+    document.getElementById('emergency-call-btn').addEventListener('click', function() {
+        // Iniciar modo de emergencia
+        startEmergencyMode();
+        
+        // Llamar al número de emergencia
+        window.location.href = 'tel:900978257';
+    });
+
+    document.getElementById('emergency-call-peru-btn').addEventListener('click', function() {
+        // Iniciar modo de emergencia
+        startEmergencyMode();
+        
+        // Llamar al número de Perú
+        window.location.href = 'tel:+51906966723';
+    });
+
+    // Nuevo botón de WhatsApp
+    document.getElementById('emergency-whatsapp-btn').addEventListener('click', function() {
+        // Iniciar modo de emergencia
+        startEmergencyMode();
+        
+        // Abrir WhatsApp con mensaje predefinido
+        const message = encodeURIComponent("¡Necesito ayuda urgente! Estoy en una situación de emergencia.");
+        window.open(`https://wa.me/51906966723?text=${message}`, '_blank');
+    });
+
+    // ========== FUNCIONALIDAD DE CÁMARA Y UBICACIÓN ==========
+    const cameraFeed = document.getElementById('camera-feed');
+    const locationDisplay = document.getElementById('location-display');
+    const locationAddress = document.getElementById('location-address');
+    const locationCoordinates = document.getElementById('location-coordinates');
+    let stream = null;
+    let locationWatchId = null;
+
+    // Función para activar la cámara
+    async function startCamera() {
+        try {
+            // Detener cualquier stream existente
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            // Solicitar acceso a la cámara frontal
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'user' },
+                audio: true
+            });
+            
+            cameraFeed.srcObject = stream;
+            cameraFeed.style.display = 'block';
+            
+            return true;
+        } catch (error) {
+            console.error('Error al acceder a la cámara:', error);
+            alert('No se pudo acceder a la cámara. Por favor, verifica los permisos.');
+            return false;
+        }
+    }
+
+    // Función para obtener la ubicación
+    function getLocation() {
+        if (!navigator.geolocation) {
+            alert('La geolocalización no es compatible con este navegador.');
+            return;
+        }
+
+        locationWatchId = navigator.geolocation.watchPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                
+                // Mostrar coordenadas
+                locationCoordinates.textContent = `Latitud: ${lat.toFixed(6)}, Longitud: ${lng.toFixed(6)}`;
+                
+                // Obtener dirección usando la API de geocodificación inversa
+                getAddressFromCoordinates(lat, lng);
+                
+                // Mostrar la sección de ubicación
+                locationDisplay.style.display = 'block';
+            },
+            (error) => {
+                console.error('Error al obtener la ubicación:', error);
+                alert('No se pudo obtener tu ubicación. Verifica que los permisos de ubicación estén activados.');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    // Función para obtener la dirección a partir de coordenadas
+    function getAddressFromCoordinates(lat, lng) {
+        // Usar la API de geocodificación inversa de OpenStreetMap
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.display_name) {
+                    locationAddress.textContent = data.display_name;
+                } else {
+                    locationAddress.textContent = 'Dirección no disponible';
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener la dirección:', error);
+                locationAddress.textContent = 'Error al obtener la dirección';
+            });
+    }
+
+    // Limpiar recursos cuando se sale de la pantalla de emergencia
+    document.getElementById('back-from-emergencia').addEventListener('click', function() {
+        // Detener la cámara
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            cameraFeed.style.display = 'none';
+        }
+        
+        // Detener la geolocalización
+        if (locationWatchId) {
+            navigator.geolocation.clearWatch(locationWatchId);
+        }
+        
+        // Ocultar secciones
+        locationDisplay.style.display = 'none';
+        document.getElementById('emergency-recording').style.display = 'none';
+    });
+
+    // ========== PWA - INSTALACIÓN ==========
+    let deferredPrompt;
+    const installBtn = document.getElementById('install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+    });
+
+    window.addEventListener('appinstalled', () => {
+        installBtn.style.display = 'none';
+        deferredPrompt = null;
+    });
+
+    // ========== INICIALIZACIÓN ==========
+    // Verificar si ya hay un usuario logueado
+    window.addEventListener('DOMContentLoaded', () => {
+        const userName = localStorage.getItem('userName');
+        if (userName) {
+            showScreen(screens.main);
+        } else {
+            showScreen(screens.welcome);
+        }
+    });
+</script>
+
+<!-- Script del chatbot (se mantiene igual) -->
+<script>
+// Agregar después de que cargue el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const errorMessage = document.getElementById('error-message');
+
+       // Base de conocimiento del bot con las preguntas y respuestas proporcionadas
+    const botResponses = {
+        "¿dónde puedo pedir ayuda si estoy siendo víctima de violencia?": "Puedes acudir a la policía local o llamar al 911 en caso de emergencia. También existen refugios y organizaciones de apoyo cercanas que te brindan asesoría y protección.",
+        
+        "¿qué necesito para denunciar la violencia que sufrí?": "Lleva una identificación oficial y, si tienes, pruebas como fotos, videos, mensajes o certificaciones médicas de lesiones. Esto ayuda, pero no es indispensable; tu testimonio es válido para iniciar la denuncia.",
+        
+        "¿puedo denunciar si no quiero ir a la policía?": "Sí, en muchos lugares puedes denunciar en línea o acudir a ministerios públicos y centros de atención a víctimas donde te brindarán acompañamiento confidencial.",
+        
+        "¿qué pasa después de hacer la denuncia?": "Se abrirá una investigación formal, se te pedirá declarar detalladamente los hechos y podrás contar con apoyo jurídico. Si hay peligro, te pueden otorgar medidas de protección urgentes como órdenes de alejamiento.",
+        
+        "¿qué medidas de protección pueden otorgarme?": "Prohibición de acercamiento del agresor, acceso a refugios, apoyo psicológico, protección policial y, en algunos casos, apoyo económico o legal para ti y tus hijos.",
+        
+        "¿puedo recibir apoyo psicológico?": "Sí, muchas organizaciones y servicios públicos ofrecen atención emocional y terapia para ayudarte a enfrentar el trauma y recuperar tu bienestar.",
+        
+        "¿qué hago si temo represalias por denunciar?": "Solicita que se mantenga en secreto la información sobre tu ubicación y datos personales. Los sistemas legales y de protección tienen protocolos para proteger tu seguridad.",
+        
+        "¿cómo proteger a mis hijos en esta situación?": "Mantén a tus hijos alejados del agresor y busca ayuda profesional y legal para garantizar su seguridad y bienestar.",
+        
+        "¿qué hacer si la violencia es psicológica o económica?": "También puedes denunciar estos tipos de violencia, ya que son igual de graves. Existen recursos legales y de apoyo para estos casos.",
+        
+        "¿dónde puedo encontrar ayuda y asesoría legal?": "Puedes acudir a ministerios públicos, centros de emergencia para mujeres, organizaciones no gubernamentales especializadas y líneas telefónicas de atención a víctimas.",
+        
+        // Respuestas adicionales para preguntas comunes
+        "hola": "¡Hola! Soy tu asistente virtual. Estoy aquí para escucharte y orientarte sobre situaciones de violencia familiar. ¿En qué puedo ayudarte?",
+        
+        "gracias": "De nada. Estoy aquí para apoyarte. Recuerda que no estás solo/a y hay personas y recursos disponibles para ayudarte. ¿Hay algo más en lo que pueda asistirte?",
+        
+        "ayuda": "Puedo ayudarte con información sobre recursos de apoyo, procedimientos legales, medidas de protección y orientación emocional. ¿Hay algo específico que te gustaría saber?",
+        
+        "tipos de violencia": "La violencia familiar puede manifestarse de diferentes formas: física, psicológica, sexual, económica y patrimonial. Todas son igualmente graves y merecen atención. ¿Te gustaría saber más sobre algún tipo específico?",
+        
+        "emergencia": "Si estás en peligro inmediato, por favor llama al 911 o al número de emergencia de tu localidad. Tu seguridad es lo más importante."
+    };
+
+    // Funciones de validación
+   function validateMessage(message) {
+        const trimmedMessage = message.trim();
+        if (trimmedMessage.length < 2) return false;
+        const hasValidCharacters = /[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(trimmedMessage);
+        return hasValidCharacters;
+    }
+
+    function showError() {
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 3000);
+    }
+
+    function addUserMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'user-message');
+        messageElement.innerHTML = `<div class="user-message-content">${message}</div>`;
+        chatMessages.appendChild(messageElement);
+        scrollToBottom();
+    }
+
+    function addBotMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'bot-message');
+        messageElement.innerHTML = `<div class="bot-message-content">${message}</div>`;
+        chatMessages.appendChild(messageElement);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function getBotResponse(userMessage) {
+        const normalizedMessage = userMessage.toLowerCase().trim();
+        
+        // Buscar coincidencia exacta primero
+        if (botResponses[normalizedMessage]) {
+            return botResponses[normalizedMessage];
+        }
+        
+        // Buscar coincidencias parciales
+        for (const key in botResponses) {
+            if (normalizedMessage.includes(key) || key.includes(normalizedMessage)) {
+                return botResponses[key];
+            }
+        }
+        
+        // Si no encuentra coincidencia, buscar por palabras clave
+        const keywords = {
+            "ayuda": "¿Dónde puedo pedir ayuda si estoy siendo víctima de violencia?",
+            "denunciar": "¿Qué necesito para denunciar la violencia que sufrí?",
+            "policía": "¿Puedo denunciar si no quiero ir a la policía?",
+            "después": "¿Qué pasa después de hacer la denuncia?",
+            "protección": "¿Qué medidas de protección pueden otorgarme?",
+            "psicológico": "¿Puedo recibir apoyo psicológico?",
+            "represalias": "¿Qué hago si temo represalias por denunciar?",
+            "hijos": "¿Cómo proteger a mis hijos en esta situación?",
+            "psicológica": "¿Qué hacer si la violencia es psicológica o económica?",
+            "económica": "¿Qué hacer si la violencia es psicológica o económica?",
+            "legal": "¿Dónde puedo encontrar ayuda y asesoría legal?"
+        };
+        
+        for (const keyword in keywords) {
+            if (normalizedMessage.includes(keyword)) {
+                return botResponses[keywords[keyword]];
+            }
+        }
+        
+        // Respuesta por defecto
+        return "Entiendo tu preocupación. Lamentablemente, no tengo información específica sobre ese tema en este momento. Te recomiendo contactar con un especialista o llamar a una línea de ayuda para recibir orientación más precisa. Puedes preguntarme sobre: dónde pedir ayuda, cómo denunciar, medidas de protección, apoyo psicológico, o protección para tus hijos.";
+    }
+
+    function showTypingIndicator() {
+        typingIndicator.style.display = 'block';
+        scrollToBottom();
+    }
+
+    function hideTypingIndicator() {
+        typingIndicator.style.display = 'none';
+    }
+
+    function processUserMessage() {
+        const message = userInput.value;
+        
+        if (!validateMessage(message)) {
+            showError();
+            userInput.focus();
+            return;
+        }
+        
+        addUserMessage(message);
+        userInput.value = '';
+        showTypingIndicator();
+        
+        setTimeout(() => {
+            hideTypingIndicator();
+            const botResponse = getBotResponse(message);
+            addBotMessage(botResponse);
+            
+            // Agregar preguntas sugeridas después de la respuesta
+            if (message.toLowerCase().includes('hola') || message.toLowerCase().includes('ayuda') || 
+                Math.random() < 0.3) { // Mostrar sugerencias aleatoriamente
+                setTimeout(() => {
+                    addSuggestedQuestions();
+                }, 500);
+            }
+        }, 1500);
+    }
+    
+    function addSuggestedQuestions() {
+        const suggestedQuestions = [
+            "¿Dónde puedo pedir ayuda si estoy siendo víctima de violencia?",
+            "¿Qué necesito para denunciar la violencia que sufrí?",
+            "¿Puedo denunciar si no quiero ir a la policía?",
+            "¿Qué medidas de protección pueden otorgarme?"
+        ];
+        
+        const suggestionsHTML = `
+            <div class="suggested-questions">
+                <p><strong>¿Te gustaría saber más sobre?</strong></p>
+                ${suggestedQuestions.map(question => 
+                    `<div class="suggested-question" data-message="${question}">${question}</div>`
+                ).join('')}
+            </div>
+        `;
+        
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message', 'bot-message');
+        messageElement.innerHTML = suggestionsHTML;
+        chatMessages.appendChild(messageElement);
+        scrollToBottom();
+        
+        // Re-conectar event listeners para las nuevas preguntas sugeridas
+        document.querySelectorAll('.suggested-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const message = this.getAttribute('data-message');
+                userInput.value = message;
+                processUserMessage();
+            });
+        });
+    }
+
+    // Event Listeners
+    sendBtn.addEventListener('click', processUserMessage);
+
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            processUserMessage();
+        }
+    });
+
+    document.querySelectorAll('.suggested-question').forEach(question => {
+        question.addEventListener('click', function() {
+            const message = this.getAttribute('data-message');
+            userInput.value = message;
+            processUserMessage();
+        });
+    });
+
+    // Enfocar el campo de entrada al cargar
+    userInput.focus();
+});
+</script>
+
+<!-- Script para foros y educación (se mantiene igual) -->
+<script>
+    // ========== FOROS MEJORADOS CON EXPERIENCIAS COMPARTIDAS ==========
+    const forumMessages = document.getElementById('forum-messages');
+    const forumInput = document.getElementById('forum-input');
+    const sendForumBtn = document.getElementById('send-forum-btn');
+    const forumError = document.getElementById('forum-error');
+    const shareExperienceBtn = document.getElementById('share-experience-btn');
+
+    // Función para agregar mensaje al foro
+    function addForumMessage(text, isUser = true, professionalType = null) {
+        const messageDiv = document.createElement('div');
+
+        if (isUser) {
+            messageDiv.className = 'forum-message user-forum-message';
+            const userName = localStorage.getItem('userName') || 'Usuario';
+            messageDiv.innerHTML = `<strong>${userName}:</strong> ${text}`;
+        } else {
+            messageDiv.className = 'forum-message professional-message';
+            let professionalName = 'Sistema de Apoyo';
+
+            if (professionalType === 'psicologa') {
+                professionalName = 'Dra. María López - Psicóloga-Mi numero de contacto 901679114';
+            } else if (professionalType === 'abogado') {
+                professionalName = 'Dr. Carlos Rodríguez - Abogado-Mi numero de contacto 926253649';
+            } else if (professionalType === 'trabajadora-social') {
+                professionalName = 'Lic. Ana Torres - Trabajadora Social-Mi numero de contacto 945454545';
+            }
+
+            messageDiv.innerHTML = `
+                <div class="professional-badge">${professionalType ? professionalType.charAt(0).toUpperCase() + professionalType.slice(1) : 'Sistema'}</div>
+                <strong>${professionalName}:</strong> ${text}
+            `;
+        }
+
+        forumMessages.appendChild(messageDiv);
+        forumMessages.scrollTop = forumMessages.scrollHeight;
+    }
+
+    // Validar y enviar mensaje al foro
+    sendForumBtn.addEventListener('click', () => {
+        const message = forumInput.value.trim();
+
+        // Validar mensaje
+        if (message.length < 10) {
+            forumError.textContent = 'El mensaje debe tener al menos 10 caracteres';
+            forumError.style.display = 'block';
+            return;
+        }
+
+        if (message.length > 500) {
+            forumError.textContent = 'El mensaje no puede tener más de 500 caracteres';
+            forumError.style.display = 'block';
+            return;
+        }
+
+        forumError.style.display = 'none';
+
+        // Agregar mensaje del usuario
+        addForumMessage(message, true);
+        forumInput.value = '';
+
+        // Simular respuesta de profesional después de 2-4 segundos
+        setTimeout(() => {
+            let response = '';
+            let professionalType = null;
+
+            if (message.toLowerCase().includes('psicolog') || message.toLowerCase().includes('emocion') || message.toLowerCase().includes('mental')) {
+                response = 'Numero de contacto 901679114 Entiendo que estás buscando apoyo emocional. Como psicóloga, puedo ayudarte a procesar lo que estás viviendo. ¿Te gustaría que hablemos en privado? Recuerda que tus emociones son válidas y el proceso de sanación lleva tiempo.';
+                professionalType = 'psicologa';
+            } else if (message.toLowerCase().includes('abogado') || message.toLowerCase().includes('legal') || message.toLowerCase().includes('denuncia')) {
+                response = 'Numero de contacto 926253649 Puedo orientarte sobre los pasos legales a seguir. Tenemos recursos para proteger tus derechos. ¿Necesitas asesoría específica sobre algún procedimiento legal? Recuerda que todas las denuncias son confidenciales.';
+                professionalType = 'abogado';
+            } else if (message.toLowerCase().includes('social') || message.toLowerCase().includes('recurso') || message.toLowerCase().includes('ayuda')) {
+                response = 'Numero de contacto 945454545 Como trabajadora social, puedo conectarte con recursos en tu comunidad. ¿Qué tipo de apoyo estás buscando? Tenemos información sobre refugios, apoyo alimentario y programas de reintegración.';
+                professionalType = 'trabajadora-social';
+            } else {
+                response = 'Gracias por compartir. Hay profesionales disponibles que pueden ayudarte. ¿Te gustaría hablar con alguno en específico? Recuerda que no estás solo/a en este proceso.';
+            }
+
+            addForumMessage(response, false, professionalType);
+        }, 2000 + Math.random() * 2000);
+    });
+
+    // Botón para compartir experiencias
+    shareExperienceBtn.addEventListener('click', () => {
+        const experienceText = prompt('Comparte tu experiencia (puedes mantener el anonimato si lo prefieres):');
+        
+        if (experienceText && experienceText.length >= 10) {
+            // Crear elemento de experiencia de usuario
+            const experienceDiv = document.createElement('div');
+            experienceDiv.className = 'user-experience';
+            
+            const userName = localStorage.getItem('userName') || 'Usuario Anónimo';
+            const department = localStorage.getItem('userDepartment') || '';
+            const locationText = department ? `, ${department.charAt(0).toUpperCase() + department.slice(1)}` : '';
+            
+            experienceDiv.innerHTML = `
+                <h4>💬 Experiencia Compartida</h4>
+                <p>"${experienceText}"</p>
+                <div class="experience-meta">- ${userName}${locationText} | Publicado ahora</div>
+            `;
+            
+            forumMessages.appendChild(experienceDiv);
+            forumMessages.scrollTop = forumMessages.scrollHeight;
+            
+            // Simular respuesta profesional después de un tiempo
+            setTimeout(() => {
+                const responseDiv = document.createElement('div');
+                responseDiv.className = 'professional-response';
+                
+                // Determinar qué profesional responde basado en el contenido
+                let professional = 'trabajadora-social';
+                let professionalName = 'Lic. Ana Torres';
+                let badge = 'Trabajadora Social';
+                
+                if (experienceText.toLowerCase().includes('legal') || experienceText.toLowerCase().includes('derecho') || experienceText.toLowerCase().includes('denuncia')) {
+                    professional = 'abogado';
+                    professionalName = 'Dr. Carlos Rodríguez';
+                    badge = 'Abogado';
+                } else if (experienceText.toLowerCase().includes('emocion') || experienceText.toLowerCase().includes('miedo') || experienceText.toLowerCase().includes('ansiedad')) {
+                    professional = 'psicologa';
+                    professionalName = 'Dra. María López';
+                    badge = 'Psicóloga';
+                }
+                
+                responseDiv.innerHTML = `
+                    <div class="professional-badge">${badge}</div>
+                    <strong>${professionalName}:</strong> Agradezco que hayas compartido tu experiencia. Tu valentía al hablar sobre esto puede inspirar a otras personas que están pasando por situaciones similares. ¿Hay algo específico en lo que pueda ayudarte hoy?
+                    <div class="response-meta">Respuesta profesional</div>
+                `;
+                
+                forumMessages.appendChild(responseDiv);
+                forumMessages.scrollTop = forumMessages.scrollHeight;
+            }, 3000);
+        } else if (experienceText) {
+            alert('Por favor, escribe al menos 10 caracteres para compartir tu experiencia.');
+        }
+    });
+
+    // Conectar con profesionales
+    document.querySelectorAll('.professional-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const professionalType = card.getAttribute('data-professional');
+            let message = '';
+
+            if (professionalType === 'psicologa') {
+                message = 'Hola, me gustaría conversar con la psicóloga. ¿Puede ayudarme con apoyo emocional?';
+            } else if (professionalType === 'abogado') {
+                message = 'Buenos días, necesito asesoría legal. ¿Puede el abogado orientarme?';
+            } else if (professionalType === 'trabajadora-social') {
+                message = 'Hola, busco información sobre recursos disponibles. ¿Puede la trabajadora social ayudarme?';
+            }
+
+            // Agregar mensaje del usuario
+            addForumMessage(message, true);
+
+            // Simular respuesta del profesional
+            setTimeout(() => {
+                let response = '';
+                if (professionalType === 'psicologa') {
+                    response = 'Claro que sí. Soy la Dra. María López, psicóloga especializada en trauma. Estoy aquí para escucharte y apoyarte. ¿Puedes contarme más sobre tu situación? Recuerda que este es un espacio seguro y confidencial.';
+                } else if (professionalType === 'abogado') {
+                    response = 'Soy el Dr. Carlos Rodríguez. Puedo orientarte sobre tus derechos y opciones legales. ¿Qué tipo de situación estás enfrentando? Todas las consultas son confidenciales y el servicio es gratuito.';
+                } else if (professionalType === 'trabajadora-social') {
+                    response = 'Hola, soy la Lic. Ana Torres. Puedo ayudarte a acceder a recursos comunitarios y programas de apoyo. ¿En qué zona vives y qué tipo de ayuda necesitas? Tenemos información actualizada sobre todos los servicios disponibles.';
+                }
+
+                addForumMessage(response, false, professionalType);
+            }, 1500);
+        });
+    });
+
+    // ========== EDUCACIÓN CON DESCARGA DE RECURSOS ==========
+    document.querySelectorAll('.resource-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const resource = item.getAttribute('data-resource');
+            
+            // Ocultar todos los detalles primero
+            document.querySelectorAll('.resource-detail').forEach(detail => {
+                detail.style.display = 'none';
+            });
+            
+            // Mostrar el detalle correspondiente
+            const detailElement = document.getElementById(`${resource}-detail`);
+            if (detailElement) {
+                detailElement.style.display = 'block';
+                detailElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Botones para cerrar recursos
+    document.querySelectorAll('.close-resource').forEach(button => {
+        button.addEventListener('click', () => {
+            const resource = button.getAttribute('data-resource');
+            document.getElementById(`${resource}-detail`).style.display = 'none';
+        });
+    });
+
+    // Botones para descargar recursos individuales
+    document.querySelectorAll('.download-resource-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const resource = this.getAttribute('data-resource');
+            let resourceName = '';
+            
+            switch(resource) {
+                case 'autoproteccion':
+                    resourceName = 'Guía de Autoprotección';
+                    break;
+                case 'derechos':
+                    resourceName = 'Guía de Derechos Legales';
+                    break;
+                case 'salud-mental':
+                    resourceName = 'Guía de Salud Mental';
+                    break;
+                case 'apoyo-familiar':
+                    resourceName = 'Guía de Apoyo Familiar';
+                    break;
+            }
+            
+            // Simular descarga
+            alert(`¡Gracias! Se ha iniciado la descarga de "${resourceName}". Revisa la carpeta de descargas de tu dispositivo.`);
+            
+            // En un entorno real, aquí iría la lógica para descargar el archivo PDF
+            console.log(`Descargando recurso: ${resourceName}`);
+        });
+    });
+
+    // Descargar todos los recursos
+    document.getElementById('download-all-btn').addEventListener('click', () => {
+        const userName = localStorage.getItem('userName');
+
+        if (!userName) {
+            document.getElementById('download-error').textContent = 'Debes iniciar sesión para descargar recursos';
+            document.getElementById('download-error').style.display = 'block';
+            return;
+        }
+
+        // Validar que el usuario tenga datos completos
+        const userPhone = localStorage.getItem('userPhone');
+        const userDepartment = localStorage.getItem('userDepartment');
+
+        if (!userPhone || !userDepartment) {
+            document.getElementById('download-error').textContent = 'Completa tu perfil para descargar recursos';
+            document.getElementById('download-error').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('download-error').style.display = 'none';
+
+        // Simular descarga
+        alert(`¡Gracias ${userName}! Se ha iniciado la descarga de todos los recursos educativos en formato ZIP. Revisa la carpeta de descargas de tu dispositivo.`);
+
+        // En un entorno real, aquí iría la lógica para descargar el archivo ZIP
+        console.log('Descargando todos los recursos educativos');
+    });
+</script>
+</body>
+</html>
